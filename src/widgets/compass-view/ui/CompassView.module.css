@@ -1,0 +1,200 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-md);
+  flex: 1;
+}
+
+.compassWrapper {
+  position: relative;
+  width: min(300px, calc(100vw - 64px));
+  height: min(300px, calc(100vw - 64px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compassRing {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: radial-gradient(
+    circle at center,
+    var(--color-surface) 0%,
+    var(--color-bg) 70%
+  );
+  box-shadow:
+    0 0 0 1px var(--color-border),
+    inset 0 0 40px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(var(--color-accent-rgb), 0.08);
+}
+
+.cardinal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.cardinalLabel {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+.north {
+  color: var(--color-accent);
+  font-size: 0.875rem;
+}
+
+.outerRingDecorations {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.tick {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 6px;
+  background-color: var(--color-border);
+  transform-origin: 0 0;
+  margin-left: -0.5px;
+}
+
+.tickMajor {
+  height: 10px;
+  background-color: var(--color-text-muted);
+  width: 2px;
+}
+
+.needle {
+  position: absolute;
+  width: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: center center;
+  filter: drop-shadow(0 0 8px rgba(var(--color-accent-rgb), 0.6));
+}
+
+.needleHead {
+  flex: 1;
+  width: 100%;
+  background: linear-gradient(
+    to top,
+    var(--color-accent),
+    color-mix(in srgb, var(--color-accent) 60%, white)
+  );
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  border-radius: 2px 2px 0 0;
+}
+
+.needleTail {
+  flex: 1;
+  width: 100%;
+  background: linear-gradient(to bottom, var(--color-text-muted), transparent);
+  clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+  opacity: 0.5;
+}
+
+.centerDot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  box-shadow: 0 0 12px var(--color-accent);
+  z-index: 2;
+}
+
+.targetEmoji {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.placeInfo {
+  text-align: center;
+}
+
+.placeName {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-xs);
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.placeDistance {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-accent);
+  margin: 0;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.emptyState {
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.emptySubtext {
+  font-size: 0.8125rem !important;
+  margin-top: var(--spacing-xs) !important;
+}
+
+.permissionButton {
+  background: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+
+@media (max-height: 700px) {
+  .container {
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+
+  .placeDistance {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .container {
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+}
