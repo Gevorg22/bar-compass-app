@@ -18,8 +18,52 @@
 
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--spacing-sm);
+}
+
+.headerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.openBadge {
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.openBadgeOpen {
+  background-color: rgba(0, 229, 160, 0.12);
+  color: var(--color-accent);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.3);
+}
+
+.openBadgeClosed {
+  background-color: rgba(255, 85, 102, 0.1);
+  color: var(--color-error);
+  border: 1px solid rgba(255, 85, 102, 0.3);
+}
+
+.nearbyOpenDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.nearbyOpenDotOpen {
+  background-color: var(--color-accent);
+}
+
+.nearbyOpenDotClosed {
+  background-color: var(--color-error);
 }
 
 .typeEmoji {

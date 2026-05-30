@@ -9,9 +9,11 @@ import { ErrorMessage } from '@/shared/ui/ErrorMessage';
 import { useGeolocation } from '@/features/geolocation';
 import { useFindPlaces } from '@/features/find-places';
 import { FilterBar } from '@/features/filter-places';
+import { ThemeToggle } from '@/features/theme';
 import { CompassView } from '@/widgets/compass-view';
 import { RadarView } from '@/widgets/radar-view';
 import { PlaceInfo } from '@/widgets/place-info';
+import { PlaceInfoSkeleton } from '@/widgets/place-info/ui/PlaceInfoSkeleton';
 import { NavigationTabs } from '@/widgets/navigation-tabs';
 
 import styles from './AppShell.module.css';
@@ -32,9 +34,10 @@ function AppInitializer() {
 }
 
 export function AppShell() {
-  const { viewMode, isLoading, error, userLocation, setError } = useAppStore();
+  const { viewMode, isLoading, error, userLocation, places, setError } = useAppStore();
 
   const isFirstLoad = !userLocation && isLoading;
+  const isPlacesLoading = !!userLocation && isLoading && places.length === 0;
 
   return (
     <div className={styles.shell}>
@@ -46,16 +49,19 @@ export function AppShell() {
           <span className={styles.logoText}>BarCompass</span>
         </div>
 
-        {userLocation && (
-          <motion.div
-            className={styles.locationBadge}
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-          >
-            <span className={styles.locationDot} />
-            <span>GPS</span>
-          </motion.div>
-        )}
+        <div className={styles.headerActions}>
+          {userLocation && (
+            <motion.div
+              className={styles.locationBadge}
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+            >
+              <span className={styles.locationDot} />
+              <span>GPS</span>
+            </motion.div>
+          )}
+          <ThemeToggle />
+        </div>
       </header>
 
       <FilterBar />
@@ -88,7 +94,7 @@ export function AppShell() {
               >
                 <CompassView />
                 <div className={styles.placeInfoWrapper}>
-                  <PlaceInfo />
+                  {isPlacesLoading ? <PlaceInfoSkeleton /> : <PlaceInfo />}
                 </div>
               </motion.div>
             )}
@@ -104,7 +110,7 @@ export function AppShell() {
               >
                 <RadarView />
                 <div className={styles.placeInfoWrapper}>
-                  <PlaceInfo />
+                  {isPlacesLoading ? <PlaceInfoSkeleton /> : <PlaceInfo />}
                 </div>
               </motion.div>
             )}
@@ -120,7 +126,7 @@ export function AppShell() {
               >
                 <MapView />
                 <div className={styles.mapPlaceInfoWrapper}>
-                  <PlaceInfo />
+                  {isPlacesLoading ? <PlaceInfoSkeleton /> : <PlaceInfo />}
                 </div>
               </motion.div>
             )}

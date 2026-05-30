@@ -12,6 +12,9 @@ export function getPlaceTypeEmoji(type: PlaceTypeFilter): string {
     pub: '🍺',
     nightclub: '🎵',
     alcohol: '🛒',
+    wine: '🍷',
+    beer: '🍻',
+    convenience: '🏪',
   };
   return emojiMap[type];
 }

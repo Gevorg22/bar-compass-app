@@ -1,3 +1,5 @@
+'use client';
+
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
@@ -13,6 +15,7 @@ interface AppState {
   deviceHeading: number;
   viewMode: ViewMode;
   activeFilters: PlaceTypeFilter[];
+  showOnlyOpen: boolean;
   isLoading: boolean;
   error: string | null;
 
@@ -22,8 +25,21 @@ interface AppState {
   setDeviceHeading: (heading: number) => void;
   setViewMode: (mode: ViewMode) => void;
   toggleFilter: (filter: PlaceTypeFilter) => void;
+  toggleShowOnlyOpen: () => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+}
+
+function computeFiltered(
+  places: Place[],
+  activeFilters: PlaceTypeFilter[],
+  showOnlyOpen: boolean,
+): Place[] {
+  return places.filter((p) => {
+    if (!activeFilters.includes(p.type)) return false;
+    if (showOnlyOpen && p.isOpen === false) return false;
+    return true;
+  });
 }
 
 export const useAppStore = create<AppState>()(
@@ -34,7 +50,8 @@ export const useAppStore = create<AppState>()(
       selectedPlace: null,
       deviceHeading: 0,
       viewMode: 'compass',
-      activeFilters: ['bar', 'pub', 'nightclub', 'alcohol'],
+      activeFilters: ['bar', 'pub', 'nightclub', 'alcohol', 'wine', 'beer', 'convenience'],
+      showOnlyOpen: false,
       isLoading: true,
       error: null,
 
@@ -56,15 +73,29 @@ export const useAppStore = create<AppState>()(
             : [...state.activeFilters, filter];
 
           const newFilters = updated.length > 0 ? updated : state.activeFilters;
-
-          const filteredPlaces = state.places.filter((p) => newFilters.includes(p.type));
+          const filtered = computeFiltered(state.places, newFilters, state.showOnlyOpen);
+          const selectedId = state.selectedPlace?.id;
           const selectedStillVisible =
-            state.selectedPlace !== null && newFilters.includes(state.selectedPlace.type);
-          const newSelected = selectedStillVisible
-            ? state.selectedPlace
-            : (filteredPlaces[0] ?? null);
+            selectedId !== undefined && filtered.some((p) => p.id === selectedId);
 
-          return { activeFilters: newFilters, selectedPlace: newSelected };
+          return {
+            activeFilters: newFilters,
+            selectedPlace: selectedStillVisible ? state.selectedPlace : (filtered[0] ?? null),
+          };
+        }),
+
+      toggleShowOnlyOpen: () =>
+        set((state) => {
+          const next = !state.showOnlyOpen;
+          const filtered = computeFiltered(state.places, state.activeFilters, next);
+          const selectedId = state.selectedPlace?.id;
+          const selectedStillVisible =
+            selectedId !== undefined && filtered.some((p) => p.id === selectedId);
+
+          return {
+            showOnlyOpen: next,
+            selectedPlace: selectedStillVisible ? state.selectedPlace : (filtered[0] ?? null),
+          };
         }),
 
       setLoading: (loading) => set({ isLoading: loading }),

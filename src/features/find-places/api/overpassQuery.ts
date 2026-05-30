@@ -1,7 +1,8 @@
-import type { OverpassElement } from '@/shared/api/overpassClient';
 import { fetchNearbyPlaces } from '@/shared/api/overpassClient';
+import type { OverpassElement } from '@/shared/api/overpassClient';
 import { SEARCH_RADIUS_METERS } from '@/shared/config/constants';
 import { calculateBearing, calculateDistance } from '@/shared/lib/geo';
+import { isOpenNow } from '@/shared/lib/openingHours';
 import { getPlaceName } from '@/entities/place/lib/formatters';
 import type { Place, PlaceTypeFilter } from '@/entities/place/model/types';
 
@@ -10,6 +11,9 @@ function detectPlaceType(tags: Record<string, string>): PlaceTypeFilter | null {
   if (tags['amenity'] === 'pub') return 'pub';
   if (tags['amenity'] === 'nightclub') return 'nightclub';
   if (tags['shop'] === 'alcohol') return 'alcohol';
+  if (tags['shop'] === 'wine') return 'wine';
+  if (tags['shop'] === 'beer') return 'beer';
+  if (tags['shop'] === 'convenience') return 'convenience';
   return null;
 }
 
@@ -32,6 +36,7 @@ function mapElementToPlace(
     lon: element.lon,
     distanceKm,
     bearing,
+    isOpen: isOpenNow(element.tags['opening_hours']),
     tags: element.tags,
   };
 }

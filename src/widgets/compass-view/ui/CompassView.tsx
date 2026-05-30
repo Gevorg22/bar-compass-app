@@ -11,6 +11,8 @@ import { useFilteredPlaces } from '@/features/filter-places';
 
 import styles from './CompassView.module.css';
 
+const VIBRATION_THRESHOLD_DEG = 8;
+
 const CARDINAL_DIRECTIONS = [
   { label: 'С', angle: 0 },
   { label: 'СВ', angle: 45 },
@@ -30,6 +32,7 @@ export function CompassView() {
   const filteredPlaces = useFilteredPlaces();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const wasOnTargetRef = useRef(false);
 
   useEffect(() => {
     const el = wrapperRef.current;
@@ -48,9 +51,21 @@ export function CompassView() {
 
   const r = (BASE_SIZE / 2) * scale;
 
-  const targetPlace = selectedPlace ?? filteredPlaces[0] ?? null;
+  const targetPlace =
+    filteredPlaces.find((p) => p.id === selectedPlace?.id) ?? filteredPlaces[0] ?? null;
 
   const needleAngle = targetPlace ? normalizeAngle(targetPlace.bearing - deviceHeading) : 0;
+
+  useEffect(() => {
+    if (!targetPlace) return;
+    const normalized = ((needleAngle % 360) + 360) % 360;
+    const isOnTarget =
+      normalized < VIBRATION_THRESHOLD_DEG || normalized > 360 - VIBRATION_THRESHOLD_DEG;
+    if (isOnTarget && !wasOnTargetRef.current && navigator.vibrate) {
+      navigator.vibrate([80, 40, 80]);
+    }
+    wasOnTargetRef.current = isOnTarget;
+  }, [needleAngle, targetPlace]);
 
   const compassRotation = -deviceHeading;
 

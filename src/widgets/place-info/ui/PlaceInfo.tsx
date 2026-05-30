@@ -13,7 +13,8 @@ export function PlaceInfo() {
   const { selectedPlace, setSelectedPlace } = useAppStore();
   const filteredPlaces = useFilteredPlaces();
 
-  const displayPlace = selectedPlace ?? filteredPlaces[0] ?? null;
+  const displayPlace =
+    filteredPlaces.find((p) => p.id === selectedPlace?.id) ?? filteredPlaces[0] ?? null;
 
   if (!displayPlace) return null;
 
@@ -38,7 +39,16 @@ export function PlaceInfo() {
               <p className={styles.placeName}>{displayPlace.name}</p>
               <p className={styles.placeType}>{getPlaceTypeLabel(displayPlace.type)}</p>
             </div>
-            <div className={styles.distance}>{formatDistance(displayPlace.distanceKm)}</div>
+            <div className={styles.headerRight}>
+              <div className={styles.distance}>{formatDistance(displayPlace.distanceKm)}</div>
+              {displayPlace.isOpen !== null && (
+                <span
+                  className={`${styles.openBadge} ${displayPlace.isOpen ? styles.openBadgeOpen : styles.openBadgeClosed}`}
+                >
+                  {displayPlace.isOpen ? 'Открыто' : 'Закрыто'}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className={styles.details}>
@@ -93,6 +103,11 @@ export function PlaceInfo() {
                 >
                   <span>{getPlaceTypeEmoji(place.type)}</span>
                   <span className={styles.nearbyName}>{place.name}</span>
+                  {place.isOpen !== null && (
+                    <span
+                      className={`${styles.nearbyOpenDot} ${place.isOpen ? styles.nearbyOpenDotOpen : styles.nearbyOpenDotClosed}`}
+                    />
+                  )}
                   <span className={styles.nearbyDist}>{formatDistance(place.distanceKm)}</span>
                 </button>
               ))}

@@ -24,6 +24,12 @@
   gap: var(--spacing-xs);
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
 .logoIcon {
   font-size: 1.375rem;
   line-height: 1;

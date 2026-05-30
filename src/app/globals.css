@@ -29,6 +29,21 @@
   --radius-full: 9999px;
 }
 
+[data-theme='light'] {
+  --color-bg: #f0f4fb;
+  --color-surface: #ffffff;
+  --color-surface-hover: #e8edf7;
+  --color-border: #d8e0f0;
+  --color-accent: #009970;
+  --color-accent-hover: #008060;
+  --color-accent-rgb: 0, 153, 112;
+  --color-text: #0d1226;
+  --color-text-secondary: #4a5470;
+  --color-text-muted: #8b96b0;
+  --color-error: #e03348;
+  --color-error-bg: rgba(224, 51, 72, 0.08);
+}
+
 *,
 *::before,
 *::after {

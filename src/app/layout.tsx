@@ -26,13 +26,38 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: '#090b12',
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#090b12' },
+    { media: '(prefers-color-scheme: light)', color: '#f0f4fb' },
+  ],
 };
+
+const themeScript = `
+  try {
+    var t = localStorage.getItem('bar-compass-theme');
+    if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch(e) {}
+`;
+
+const swScript = `
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js').catch(function() {});
+    });
+  }
+`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru">
-      <body>{children}</body>
+    <html lang="ru" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body>
+        {children}
+        <script dangerouslySetInnerHTML={{ __html: swScript }} />
+      </body>
     </html>
   );
 }

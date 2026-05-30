@@ -13,6 +13,9 @@ export const PLACE_TYPES = {
   pub: 'pub',
   nightclub: 'nightclub',
   alcohol: 'alcohol',
+  wine: 'wine',
+  beer: 'beer',
+  convenience: 'convenience',
 } as const;
 
 export const PLACE_TYPE_LABELS: Record<keyof typeof PLACE_TYPES, string> = {
@@ -20,8 +23,13 @@ export const PLACE_TYPE_LABELS: Record<keyof typeof PLACE_TYPES, string> = {
   pub: 'Паб',
   nightclub: 'Ночной клуб',
   alcohol: 'Алкомаркет',
+  wine: 'Винотека',
+  beer: 'Пивной',
+  convenience: '24ч',
 };
 
 export const RADAR_MAX_RADIUS_KM = SEARCH_RADIUS_METERS / 1000;
 
 export const COMPASS_UPDATE_INTERVAL_MS = 100;
+
+export const OVERPASS_CACHE_TTL_MS = 5 * 60 * 1000;

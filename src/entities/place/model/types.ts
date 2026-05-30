@@ -10,5 +10,6 @@ export interface Place {
   lon: number;
   distanceKm: number;
   bearing: number;
+  isOpen: boolean | null;
   tags: Record<string, string>;
 }

@@ -12,7 +12,7 @@ import { useFilterState } from '../model/filterModel';
 import styles from './FilterBar.module.css';
 
 export function FilterBar() {
-  const { isFilterActive, toggleFilter } = useFilterState();
+  const { isFilterActive, toggleFilter, showOnlyOpen, toggleShowOnlyOpen } = useFilterState();
 
   const filters = Object.keys(PLACE_TYPES) as PlaceTypeFilter[];
 
@@ -23,6 +23,16 @@ export function FilterBar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
+      <button
+        className={`${styles.openNowBtn} ${showOnlyOpen ? styles.openNowActive : ''}`}
+        onClick={toggleShowOnlyOpen}
+        aria-pressed={showOnlyOpen}
+      >
+        🕐 Открыто
+      </button>
+
+      <div className={styles.separator} />
+
       {filters.map((filter) => (
         <Button
           key={filter}
