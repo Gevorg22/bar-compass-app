@@ -69,6 +69,7 @@
 
 .main {
   flex: 1;
+  min-height: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -86,6 +87,7 @@
 
 .viewWrapper {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   overflow-y: auto;

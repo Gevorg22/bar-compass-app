@@ -8,6 +8,8 @@
   font-family: var(--font-sans);
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition:
     background-color 0.2s ease,
     color 0.2s ease,

@@ -8,7 +8,6 @@ function getInitialTheme(): Theme {
   try {
     const saved = localStorage.getItem('bar-compass-theme') as Theme | null;
     if (saved === 'dark' || saved === 'light') return saved;
-    if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light';
   } catch {}
   return 'dark';
 }

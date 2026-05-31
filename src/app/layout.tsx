@@ -2,13 +2,15 @@ import type { Metadata, Viewport } from 'next';
 
 import './globals.css';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 export const metadata: Metadata = {
   title: 'BarCompass — найди ближайший бар',
   description:
     'Компас, который укажет путь к ближайшему бару, пабу или алкомаркету. Работает на основе OpenStreetMap, бесплатно.',
   keywords: ['бар', 'паб', 'компас', 'геолокация', 'алкоголь', 'найти бар'],
   authors: [{ name: 'BarCompass' }],
-  manifest: '/manifest.json',
+  manifest: `${basePath}/manifest.json`,
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
@@ -26,15 +28,13 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: [
-    { media: '(prefers-color-scheme: dark)', color: '#090b12' },
-    { media: '(prefers-color-scheme: light)', color: '#f0f4fb' },
-  ],
+  themeColor: '#090b12',
 };
 
-const themeScript = `try{var t=localStorage.getItem('bar-compass-theme');if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}`;
+const themeScript = `try{var t=localStorage.getItem('bar-compass-theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}`;
 
-const swScript = `if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}`;
+const swPath = `${basePath}/sw.js`;
+const swScript = `if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('${swPath}').catch(function(){});});}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

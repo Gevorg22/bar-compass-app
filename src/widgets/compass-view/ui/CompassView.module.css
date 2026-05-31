@@ -4,7 +4,7 @@
   align-items: center;
   gap: var(--spacing-lg);
   padding: var(--spacing-lg) var(--spacing-md);
-  flex: 1;
+  flex: 0 0 auto;
 }
 
 .compassWrapper {
