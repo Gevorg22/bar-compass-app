@@ -10,16 +10,16 @@ afterEach(() => {
 });
 
 describe('setToCache / getFromCache', () => {
-  it('returns null when key is not in storage', () => {
+  it('возвращает null, если ключ отсутствует в хранилище', () => {
     expect(getFromCache('missing', 5000)).toBeNull();
   });
 
-  it('stores and retrieves a value', () => {
+  it('сохраняет и возвращает значение', () => {
     setToCache('key1', { foo: 'bar' });
     expect(getFromCache<{ foo: string }>('key1', 60_000)).toEqual({ foo: 'bar' });
   });
 
-  it('returns null when entry is expired', () => {
+  it('возвращает null для устаревшей записи', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2024-01-01T00:00:00.000Z'));
 
@@ -30,7 +30,7 @@ describe('setToCache / getFromCache', () => {
     expect(getFromCache<number[]>('key2', 60_000)).toBeNull();
   });
 
-  it('removes expired entry from sessionStorage', () => {
+  it('удаляет устаревшую запись из sessionStorage', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2024-01-01T00:00:00.000Z'));
 
@@ -42,7 +42,7 @@ describe('setToCache / getFromCache', () => {
     expect(sessionStorage.getItem('key3')).toBeNull();
   });
 
-  it('returns value when entry is within TTL', () => {
+  it('возвращает значение, если TTL ещё не истёк', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2024-01-01T00:00:00.000Z'));
 
@@ -53,12 +53,12 @@ describe('setToCache / getFromCache', () => {
     expect(getFromCache<number>('key4', 60_000)).toBe(42);
   });
 
-  it('handles invalid JSON in sessionStorage gracefully', () => {
+  it('корректно обрабатывает невалидный JSON в sessionStorage', () => {
     sessionStorage.setItem('badkey', 'not-json');
     expect(getFromCache<string>('badkey', 60_000)).toBeNull();
   });
 
-  it('stores different value types', () => {
+  it('сохраняет значения разных типов', () => {
     setToCache('num', 123);
     setToCache('str', 'hello');
     setToCache('arr', [1, 2]);

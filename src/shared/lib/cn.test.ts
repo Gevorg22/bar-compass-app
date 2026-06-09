@@ -2,26 +2,26 @@ import { describe, it, expect } from 'vitest';
 import { cn } from './cn';
 
 describe('cn', () => {
-  it('returns empty string when called with no arguments', () => {
+  it('возвращает пустую строку при вызове без аргументов', () => {
     expect(cn()).toBe('');
   });
 
-  it('returns a single class unchanged', () => {
+  it('возвращает один класс без изменений', () => {
     expect(cn('foo')).toBe('foo');
   });
 
-  it('joins multiple classes with a space', () => {
+  it('объединяет несколько классов через пробел', () => {
     expect(cn('foo', 'bar', 'baz')).toBe('foo bar baz');
   });
 
-  it('filters out falsy values', () => {
+  it('отфильтровывает falsy-значения', () => {
     expect(cn('foo', '', 'bar')).toBe('foo bar');
     expect(cn('foo', undefined, 'bar')).toBe('foo bar');
     expect(cn('foo', null, 'bar')).toBe('foo bar');
     expect(cn('foo', false, 'bar')).toBe('foo bar');
   });
 
-  it('returns empty string when all values are falsy', () => {
+  it('возвращает пустую строку, если все значения falsy', () => {
     expect(cn(undefined, null, false, '')).toBe('');
   });
 });

@@ -14,7 +14,7 @@ describe('getPlaceTypeLabel', () => {
   ];
 
   cases.forEach(([type, label]) => {
-    it(`returns "${label}" for type "${type}"`, () => {
+    it(`возвращает "${label}" для типа "${type}"`, () => {
       expect(getPlaceTypeLabel(type)).toBe(label);
     });
   });
@@ -32,29 +32,29 @@ describe('getPlaceTypeEmoji', () => {
   ];
 
   cases.forEach(([type, emoji]) => {
-    it(`returns "${emoji}" for type "${type}"`, () => {
+    it(`возвращает "${emoji}" для типа "${type}"`, () => {
       expect(getPlaceTypeEmoji(type)).toBe(emoji);
     });
   });
 });
 
 describe('getPlaceName', () => {
-  it('returns tags.name when present', () => {
+  it('возвращает tags.name, если он есть', () => {
     const tags = { name: 'Тёмный паб', 'name:ru': 'Другое' };
     expect(getPlaceName(tags, 'pub')).toBe('Тёмный паб');
   });
 
-  it('returns tags["name:ru"] when name is absent', () => {
+  it('возвращает tags["name:ru"], если name отсутствует', () => {
     const tags = { 'name:ru': 'Русское название' };
     expect(getPlaceName(tags, 'bar')).toBe('Русское название');
   });
 
-  it('returns type label when both name fields are absent', () => {
+  it('возвращает метку типа, если оба поля имени отсутствуют', () => {
     const tags = { amenity: 'bar' };
     expect(getPlaceName(tags, 'bar')).toBe('Бар');
   });
 
-  it('returns type label for empty tags', () => {
+  it('возвращает метку типа для пустых тегов', () => {
     expect(getPlaceName({}, 'nightclub')).toBe('Ночной клуб');
   });
 });
